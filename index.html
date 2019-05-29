@@ -1,19 +1,58 @@
-<!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="/styles.css" />
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-  <title>XKCD Browser</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>XKCD Browser</title>
 </head>
 
-<body>
-  <h1>XKCD Browser</h1>
-  <div id="app">
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="/script.js"></script>
-</body>
 
+<body>
+
+    <div id="app">
+        <div v-if="loading">
+            <p>Loading...</p>
+        </div>
+        <div v-else>
+            <h2>{{current.safe_title}}</h2>
+            <p>
+                <button v-on:click="firstComic">First</button>
+                <button v-on:click="previousComic">Previous</button>
+                <button v-on:click="nextComic">Next</button>
+                <button v-on:click="lastComic">Latest</button>
+                <button v-on:click="randomComic">Random</button>
+            </p>
+            <img v-bind:src="current.img" v-bind:alt="current.alt">
+            <p>{{current.alt}}</p>
+            <p><i>#{{current.num}}, drawn on {{current.day}} {{month}} {{current.year}}</i></p>
+            
+            <h2>Give {{current.safe_title}} a rating!</h2>
+            <star-rating @rating-selected="setRating"></star-rating>
+            <p>Average rating: {{avg_rating}}</p>
+            <h3>Add a Comment</h3>
+            <form v-on:submit.prevent="addComment">
+                <input v-model="addedName" placeholder="Name"></p>
+                <textarea v-model="addedComment"></textarea>
+                <br />
+                <button type="submit">Comment</button>
+            </form>
+            <h3>Comments</h3>
+            <div v-for="comment in comments[number]">
+                <hr>
+                <p>{{comment.text}}</p>
+                <p><i>-- {{comment.author}}</i></p>
+                <p><i>Commented on {{comment.time}}</i></p>
+            </div>
+        </div>     
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+    <script src="https://unpkg.com/vue-star-rating/dist/star-rating.min.js"></script>
+    <script src="./script.js"></script>
+    
+
+</body>
 </html>
